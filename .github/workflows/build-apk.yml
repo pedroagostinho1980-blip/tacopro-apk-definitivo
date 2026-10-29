@@ -1,0 +1,70 @@
+name: Compilar APK Android TacoPro
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-apk:
+    name: Gerar APK Definitivo com Widget
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 1. Baixar código
+        uses: actions/checkout@v4
+
+      - name: 2. Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 3. Compilar Web App
+        run: |
+          npm install
+          npm run build
+
+      - name: 4. Sincronizar Capacitor Android
+        run: |
+          npx cap sync android
+
+      - name: 5. Configurar Java JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: 6. Configurar Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: 7. Compilar o ficheiro APK Android
+        run: |
+          cd android
+          if [ -f "gradlew" ]; then
+            chmod +x gradlew
+            ./gradlew assembleDebug --no-daemon
+          else
+            gradle assembleDebug --no-daemon
+          fi
+
+      - name: 8. Disponibilizar APK para Download
+        uses: actions/upload-artifact@v4
+        with:
+          name: TacoPro-Android-APK
+          path: android/app/build/outputs/apk/debug/*.apk
+          retention-days: 30
+
+      - name: 9. Publicar Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.0-apk-${{ github.run_number }}
+          name: TacoPro Tacógrafo Digital v1.0.0 (APK Definitivo)
+          body: |
+            🚚 **TacoPro APK Definitivo com Widget de 4 Símbolos**
+          files: android/app/build/outputs/apk/debug/*.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true

@@ -31,24 +31,21 @@ jobs:
         run: |
           npx cap sync android
 
-      - name: 5. Configurar Java JDK 17
+      - name: 5. Configurar Java JDK 21
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
 
-      - name: 6. Configurar Gradle
+      - name: 6. Configurar Gradle 8.7
         uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.7'
 
       - name: 7. Compilar o ficheiro APK Android
         run: |
           cd android
-          if [ -f "gradlew" ]; then
-            chmod +x gradlew
-            ./gradlew assembleDebug --no-daemon
-          else
-            gradle assembleDebug --no-daemon
-          fi
+          gradle assembleDebug --no-daemon
 
       - name: 8. Disponibilizar APK para Download
         uses: actions/upload-artifact@v4

@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">TacoPro</string>
+    <string name="title_activity_main">TacoPro Tacógrafo Digital</string>
+    <string name="widget_name">TacoPro Tacógrafo (4 Símbolos)</string>
+    <string name="widget_description">Widget com os 4 símbolos oficiais de tarefas (🚗, ⚒️, ⏹️, 🛏️) para controlo direto no ecrã inicial.</string>
+</resources>

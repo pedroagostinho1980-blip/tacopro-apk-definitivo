@@ -1,0 +1,8 @@
+{
+  "name": "TacoPro - Gestão de Tempos de Condução e Tacógrafo",
+  "description": "Aplicação profissional para motoristas de veículos pesados de mercadorias e passageiros. Controlo rigoroso de condução contínua, trabalho, disponibilidade e descanso segundo o Regulamento (CE) n.º 561/2006.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

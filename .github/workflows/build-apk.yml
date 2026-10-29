@@ -17,14 +17,14 @@ jobs:
       - name: 1. Baixar código
         uses: actions/checkout@v4
 
-      - name: 2. Configurar Node.js
+      - name: 2. Configurar Node.js (v22)
         uses: actions/setup-node@v4
         with:
           node-version: 22
 
       - name: 3. Compilar Web App
         run: |
-          npm install
+          npm install --legacy-peer-deps
           npm run build
 
       - name: 4. Sincronizar Capacitor Android

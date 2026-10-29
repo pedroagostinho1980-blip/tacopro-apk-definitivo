@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#020617"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="amberGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    <linearGradient id="cyanRing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background with rounded squircles -->
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <rect x="16" y="16" width="480" height="480" rx="96" fill="none" stroke="#1e293b" stroke-width="6"/>
+
+  <!-- Tachograph Dial Ring -->
+  <circle cx="256" cy="256" r="176" fill="none" stroke="#1e293b" stroke-width="20" stroke-dasharray="8 8"/>
+  <path d="M 120 330 A 160 160 0 1 1 392 330" fill="none" stroke="url(#cyanRing)" stroke-width="24" stroke-linecap="round"/>
+
+  <!-- Heavy Truck Cab Silhouette -->
+  <g transform="translate(156, 170) scale(0.78)" fill="none" stroke="url(#amberGlow)" stroke-width="18" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Truck front cab -->
+    <path d="M 20 180 L 20 40 C 20 25 32 15 48 15 L 180 15 C 195 15 208 25 212 40 L 235 120 L 245 120 C 255 120 260 128 260 138 L 260 180 Z" fill="#0f172a"/>
+    <!-- Windshield -->
+    <path d="M 45 40 L 175 40 C 182 40 188 45 190 52 L 208 105 L 45 105 Z" fill="#020617" stroke="url(#amberGlow)" stroke-width="12"/>
+    <!-- Wheels -->
+    <circle cx="70" cy="190" r="28" fill="#020617" stroke="url(#amberGlow)" stroke-width="16"/>
+    <circle cx="210" cy="190" r="28" fill="#020617" stroke="url(#amberGlow)" stroke-width="16"/>
+    <!-- Headlights -->
+    <line x1="240" y1="150" x2="255" y2="150" stroke="#f59e0b" stroke-width="12"/>
+  </g>
+
+  <!-- Speedometer needle pointing to compliance green zone -->
+  <polygon points="256,256 248,150 256,136 264,150" fill="#f59e0b"/>
+  <circle cx="256" cy="256" r="18" fill="#f59e0b"/>
+  <circle cx="256" cy="256" r="8" fill="#020617"/>
+
+  <!-- CE 561 badge at bottom -->
+  <rect x="176" y="380" width="160" height="40" rx="10" fill="#0f172a" stroke="#d97706" stroke-width="3"/>
+  <text x="256" y="406" font-family="system-ui, sans-serif" font-size="18" font-weight="900" fill="#fbbf24" text-anchor="middle" letter-spacing="2">CE 561/2006</text>
+</svg>

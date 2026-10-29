@@ -1,2 +1,3 @@
 include ':app'
 rootProject.name = 'TacoPro'
+apply from: 'capacitor.settings.gradle'

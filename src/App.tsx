@@ -124,7 +124,7 @@ export default function App() {
   const [isShowcaseOpen, setIsShowcaseOpen] = useState(false);
   const [isAndroidApkOpen, setIsAndroidApkOpen] = useState(false);
 
-  // Handle PWA shortcut action query params (?action=set_activity&type=DRIVING|WORK|AVAILABILITY|REST)
+  // Handle PWA shortcut action query params & Native Android Widget broadcasts
   useEffect(() => {
     try {
       const searchParams = new URLSearchParams(window.location.search);
@@ -137,6 +137,42 @@ export default function App() {
     } catch {
       // ignore
     }
+
+    // Listen to native Android Widget 1-tap events
+    const handleNativeWidgetEvent = (e: Event) => {
+      try {
+        const customEvent = e as CustomEvent<{ activity: ActivityType }>;
+        const activity = customEvent.detail?.activity;
+        if (activity && ['DRIVING', 'WORK', 'AVAILABILITY', 'REST'].includes(activity)) {
+          handleSwitchActivity(activity, `Comutação via Widget Android (${activity})`);
+        }
+      } catch {
+        // ignore
+      }
+    };
+
+    window.addEventListener('tacopro_native_activity_changed', handleNativeWidgetEvent);
+
+    // Initial check from Native Bridge on launch
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const bridge = (window as any).TacoProNative;
+      if (bridge && typeof bridge.getWidgetCurrentActivity === 'function') {
+        const nativeActivity = bridge.getWidgetCurrentActivity() as ActivityType;
+        if (nativeActivity && ['DRIVING', 'WORK', 'AVAILABILITY', 'REST'].includes(nativeActivity)) {
+          const currentActive = logs.find((l) => !l.endTime);
+          if (!currentActive || currentActive.type !== nativeActivity) {
+            handleSwitchActivity(nativeActivity, `Sincronização com Widget Android (${nativeActivity})`);
+          }
+        }
+      }
+    } catch {
+      // ignore
+    }
+
+    return () => {
+      window.removeEventListener('tacopro_native_activity_changed', handleNativeWidgetEvent);
+    };
   }, []);
 
   // Sync to localStorage
@@ -250,6 +286,18 @@ export default function App() {
 
     if (alertSettings.soundAlertsEnabled) {
       playAlertTone('INFO');
+    }
+
+    // Sync state directly with Native Android Home Screen Widget
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const bridge = (window as any).TacoProNative;
+      if (bridge && typeof bridge.updateWidgetState === 'function') {
+        const startTs = new Date(nowIso).getTime();
+        bridge.updateWidgetState(newType, startTs, compliance.continuousDrivingMinutes || 0);
+      }
+    } catch {
+      // ignore
     }
   };
 
